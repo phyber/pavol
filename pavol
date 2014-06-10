@@ -17,6 +17,9 @@ function usage {
 }
 
 function get_default_sink {
+	# Assigning to a local var at the same time as declaring it will
+	# break the value that $? contains, so we don't do that for the sink
+	# variable.
 	local sink
 	sink=$(${pactl} stat \
 		| tr -d ' ' \
@@ -64,7 +67,7 @@ function main {
 	esac
 
 	# Figure out which sink we want to use.
-	local sink=""
+	local sink
 	case ${numargs} in
 		1)
 			sink=$(get_default_sink)
@@ -86,7 +89,7 @@ function main {
 			;;
 	esac
 
-	# Toggling or setting volume?
+	# Toggling or setting volume? Volume is always the last arg.
 	local volume="${@: -1}"
 
 	# Get sink command based on the "volume" being set.
@@ -95,7 +98,7 @@ function main {
 	# Occasionally helpful debug output
 	pavoldebug "C: ${cmd}. S: ${sink}. V: ${volume}."
 
-	# Finally set the volume.
+	# Finally set the volume and exit with pactl status.
 	${pactl} ${cmd} ${sink} -- ${volume}
 	exit $?
 }
