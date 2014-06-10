@@ -18,21 +18,22 @@ function usage {
 
 function get_default_sink {
 	local sink=$(${pactl} stat \
-		| grep "Default Sink" \
 		| tr -d ' ' \
-		| cut -d":" -f2-)
-	# FIXME: Check for errors.
-	echo "${sink}"
+		| grep "DefaultSink")
+	local found=$?
+	echo "${sink##*:}"
+	return ${found}
 }
 
 function get_sink_name {
 	local search=$1
 	local sink=$(${pactl} list short sinks \
-		| grep "${search}" \
-		| tr '[:space:]' ' ' \
-		| cut -d" " -f2)
-	# FIXME: Check for errors
+		| tr '\t' ' ' \
+		| cut -d" " -f2 \
+		| grep "${search}")
+	local found=$?
 	echo "${sink}"
+	return ${found}
 }
 
 function get_sink_command {
@@ -42,6 +43,15 @@ function get_sink_command {
 	else
 		echo "set-sink-volume"
 	fi
+	return 0
+}
+
+function check_sink {
+	local sink="$1"
+	if [ "${sink}" == "" ]; then
+		return 1
+	fi
+	return 0
 }
 
 function pavoldebug {
@@ -64,9 +74,17 @@ function main {
 	case ${numargs} in
 		1)
 			sink=$(get_default_sink)
+			if ! check_sink $sink; then
+				echo "Couldn't find default sink." >&2
+				exit 1
+			fi
 			;;
 		2)
 			sink=$(get_sink_name $1)
+			if ! check_sink $sink; then
+				echo "Couldn't find sink named '$1'." >&2
+				exit 1
+			fi
 			;;
 		*)
 			usage
