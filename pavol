@@ -17,7 +17,8 @@ function usage {
 }
 
 function get_default_sink {
-	local sink=$(${pactl} stat \
+	local sink
+	sink=$(${pactl} stat \
 		| tr -d ' ' \
 		| grep "DefaultSink")
 	local found=$?
@@ -27,7 +28,8 @@ function get_default_sink {
 
 function get_sink_name {
 	local search=$1
-	local sink=$(${pactl} list short sinks \
+	local sink
+	sink=$(${pactl} list short sinks \
 		| tr '\t' ' ' \
 		| cut -d" " -f2 \
 		| grep "${search}")
@@ -42,14 +44,6 @@ function get_sink_command {
 		echo "set-sink-mute"
 	else
 		echo "set-sink-volume"
-	fi
-	return 0
-}
-
-function check_sink {
-	local sink="$1"
-	if [ "${sink}" == "" ]; then
-		return 1
 	fi
 	return 0
 }
@@ -74,14 +68,14 @@ function main {
 	case ${numargs} in
 		1)
 			sink=$(get_default_sink)
-			if ! check_sink $sink; then
+			if [ $? -ne 0 ]; then
 				echo "Couldn't find default sink." >&2
 				exit 1
 			fi
 			;;
 		2)
 			sink=$(get_sink_name $1)
-			if ! check_sink $sink; then
+			if [ $? -ne 0 ]; then
 				echo "Couldn't find sink named '$1'." >&2
 				exit 1
 			fi
