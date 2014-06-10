@@ -28,6 +28,12 @@ of a volume level.
 $ pavol analog-stereo toggle
 ~~~
 
+The volume argument (unless it is set to `toggle`) is passed as-is through to
+`pactl`. To see more information about the volume argument, you should check
+the `pactl(1)` man page.
+
+## Debugging
+
 If you believe that `pavol` isn't behaving itself for some reason, you can try
 to get a better look at what it's doing by setting the `PAVOL_DEBUG`
 environment variable to 1.
