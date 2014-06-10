@@ -27,3 +27,15 @@ of a volume level.
 ~~~ shell
 pavol analog-stereo toggle
 ~~~
+
+If you believe that `pavol` isn't behaving itself for some reason, you can try
+to get a better look at what it's doing by setting the `PAVOL_DEBUG`
+environment variable to 1.
+
+~~~ shell
+PAVOL_DEBUG=1 pavol analog-stereo +1%
+C: set-sink-volume. S: alsa_output.pci-0000_00_1b.0.analog-stereo. V: +1%.
+~~~
+
+The C, S and V values here are the Command, Sink and Volume that are going to
+be passed to `pactl`.
