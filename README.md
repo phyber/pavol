@@ -30,7 +30,7 @@ $ pavol analog-stereo toggle
 
 The volume argument (unless it is set to `toggle`) is passed as-is through to
 `pactl`. To see more information about the volume argument, you should check
-the `pactl(1)` man page.
+the `set-sink-volume` section of the `pactl(1)` man page.
 
 ## Debugging
 
