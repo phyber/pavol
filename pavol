@@ -34,10 +34,10 @@ function get_sink_name {
 	local sink
 	sink=$(${pactl} list short sinks \
 		| tr '\t' ' ' \
-		| cut -d" " -f2 \
 		| grep "${search}")
 	local found=$?
-	echo "${sink}"
+	sink=(${sink})
+	echo ${sink[1]}
 	return ${found}
 }
 
