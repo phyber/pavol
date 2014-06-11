@@ -21,8 +21,7 @@ function get_default_sink {
 	# variable.
 	local sink
 	sink=$(${pactl} stat \
-		| tr -d ' ' \
-		| grep "DefaultSink")
+		| grep "Default Sink")
 	local found=$?
 	echo "${sink##*:}"
 	return ${found}
