@@ -32,7 +32,6 @@ function get_sink_name {
 	local search=$1
 	local sink
 	sink=$(${pactl} list short sinks \
-		| tr '\t' ' ' \
 		| grep "${search}")
 	local found=$?
 	sink=(${sink})
