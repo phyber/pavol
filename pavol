@@ -8,11 +8,14 @@ fi
 
 function usage {
 	local me=${0##*/}
-	echo "Usage: ${me} [sink-name] <[-]Volume[%]>|toggle"
+	echo "Usage: ${me} [SINKNAME] [-|+]VOLUME[%]|toggle"
 	echo "Example: ${me} -10%"
-	echo "         ${me} sink-name +5%"
+	echo "         ${me} sink-name 50%"
 	echo "         ${me} toggle"
 	echo "         ${me} sink-name toggle"
+	echo ""
+	echo "More information on the volume specification can be found in the"
+	echo "pactl(1) man page."
 }
 
 function get_default_sink {
