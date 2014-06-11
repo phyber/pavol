@@ -36,7 +36,8 @@ the `set-sink-volume` section of the `pactl(1)` man page.
 
 If you believe that `pavol` isn't behaving itself for some reason, you can try
 to get a better look at what it's doing by setting the `PAVOL_DEBUG`
-environment variable to 1.
+environment variable. You may set it to any value, pavol only checks for its
+existance, not its content.
 
 ~~~ shell
 $ PAVOL_DEBUG=1 pavol analog-stereo +1%

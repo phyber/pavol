@@ -20,6 +20,8 @@ function usage {
 	echo "pactl(1) man page."
 }
 
+# Outputs the name of the default PulseAudio sink.
+# Returns 0 on success, 1 on failure.
 function get_default_sink {
 	# Assigning to a local var at the same time as declaring it will
 	# break the value that $? contains, so we don't do that for the sink
@@ -32,6 +34,8 @@ function get_default_sink {
 	return ${found}
 }
 
+# Outputs the full name of the named sink.
+# Returns 0 on success, 1 on failure.
 function get_named_sink {
 	local search=$1
 	local sink
@@ -43,6 +47,8 @@ function get_named_sink {
 	return ${found}
 }
 
+# Outputs the needed sink command based on the volume.
+# Returns 0.
 function get_sink_command {
 	local vol="$1"
 	if [ "${vol}" == "toggle" ]; then
@@ -53,10 +59,13 @@ function get_sink_command {
 	return 0
 }
 
+# Outputs the given line to stdout if PAVOL_DEBUG is set.
+# Returns 0.
 function pavol_debug {
-	if [ "x${PAVOL_DEBUG}" == "x1" ]; then
+	if [ -v PAVOL_DEBUG ]; then
 		echo $1
 	fi
+	return 0
 }
 
 function main {
