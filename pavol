@@ -1,4 +1,5 @@
 #!/bin/bash
+# pavol: simple command line interface for setting PulseAudio volume.
 
 readonly pactl=$(type -p pactl)
 if [ $? -ne 0 ]; then
