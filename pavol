@@ -1,11 +1,12 @@
 #!/bin/bash
 # pavol: simple command line interface for setting PulseAudio volume.
 
-readonly pactl=$(type -p pactl)
+pactl=$(type -p pactl)
 if [ $? -ne 0 ]; then
 	echo "pactl not found." >&2
 	exit 1
 fi
+readonly pactl
 
 function usage {
 	local me=${0##*/}
@@ -59,7 +60,7 @@ function pavol_debug {
 }
 
 function main {
-	local argc=$#
+	local -r argc=$#
 
 	# Handle help/usage request.
 	case $1 in
