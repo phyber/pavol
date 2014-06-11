@@ -51,7 +51,7 @@ function get_sink_command {
 	return 0
 }
 
-function pavoldebug {
+function pavol_debug {
 	if [ "x${PAVOL_DEBUG}" == "x1" ]; then
 		echo $1
 	fi
@@ -98,7 +98,7 @@ function main {
 	local cmd=$(get_sink_command $volume)
 
 	# Occasionally helpful debug output
-	pavoldebug "C: ${cmd}. S: ${sink}. V: ${volume}."
+	pavol_debug "C: ${cmd}. S: ${sink}. V: ${volume}."
 
 	# Finally set the volume and exit with pactl status.
 	${pactl} ${cmd} ${sink} -- ${volume}
