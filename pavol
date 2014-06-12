@@ -29,7 +29,7 @@ function get_default_sink {
 	local sink
 	sink=$(${pactl} stat \
 		| grep "Default Sink")
-	local found=$?
+	local -r found=$?
 	echo "${sink##*:}"
 	return ${found}
 }
@@ -37,11 +37,11 @@ function get_default_sink {
 # Outputs the full name of the named sink.
 # Returns 0 on success, 1 on failure.
 function get_named_sink {
-	local search=$1
+	local -r search="$1"
 	local sink
 	sink=$(${pactl} list short sinks \
 		| grep "${search}")
-	local found=$?
+	local -r found=$?
 	sink=(${sink})
 	echo ${sink[1]}
 	return ${found}
@@ -50,7 +50,7 @@ function get_named_sink {
 # Outputs the needed sink command based on the volume.
 # Returns 0.
 function get_sink_command {
-	local vol="$1"
+	local -r vol="$1"
 	if [ "${vol}" == "toggle" ]; then
 		echo "set-sink-mute"
 	else
@@ -62,9 +62,9 @@ function get_sink_command {
 # Outputs the given line to stdout if PAVOL_DEBUG is set.
 # Returns 0.
 function pavol_debug {
-	local line=$1
+	local -r line="$1"
 	if [ -v PAVOL_DEBUG ]; then
-		echo $line
+		echo "$line"
 	fi
 	return 0
 }
@@ -104,10 +104,10 @@ function main {
 	esac
 
 	# Toggling or setting volume? Volume is always the last arg.
-	local volume="${@: -1}"
+	local -r volume="${@: -1}"
 
 	# Get sink command based on the "volume" being set.
-	local cmd=$(get_sink_command $volume)
+	local -r cmd=$(get_sink_command $volume)
 
 	# Occasionally helpful debug output
 	pavol_debug "C: ${cmd}. S: ${sink}. V: ${volume}."
