@@ -30,7 +30,7 @@ function get_default_sink {
 	sink=$(${pactl} stat \
 		| grep "Default Sink")
 	local -r found=$?
-	echo "${sink##*:}"
+	echo "${sink##*: }"
 	return ${found}
 }
 
