@@ -71,29 +71,37 @@ function get_volume {
 	# On each line we have to check if we found the sink name we want, if
 	# we did we can start looking for the volume.
 	local found
+	local muted
 	local volume
-	local vol_line
 	while read line; do
 		case "${line}" in
 			Name:*)
 				grep "${sink}" <<<"${line}" >/dev/null 2>&1
 				found=$?
-				readonly found
+				;;
+			Mute:*)
+				if [ "${found}" -eq 0 ]; then
+					muted="${line##*: }"
+				fi
 				;;
 			Volume:*)
-				if [ ! "${found}" -eq 0 ]; then
-					continue
+				if [ "${found}" -eq 0 ]; then
+					local -r vol_line=(${line})
+					volume=${vol_line[4]}
+					break
 				fi
-				vol_line=(${line})
-				readonly vol_line
-				break
 				;;
 		esac
 	done < <(${pactl} list sinks)
 	if [ ${found} -eq 0 ]; then
+		if [ "${muted}" == "yes" ]; then
+			volume="♩${volume}"
+		else
+			volume="♫${volume}"
+		fi
 		# This is the volume of the left speaker, which should be good
 		# enough.
-		echo ${vol_line[4]}
+		echo ${volume}
 	fi
 	return ${found}
 }
