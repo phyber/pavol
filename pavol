@@ -30,7 +30,9 @@ function get_default_sink {
 	sink=$(${pactl} stat \
 		| grep "Default Sink")
 	local -r found=$?
-	echo "${sink##*: }"
+	if [ ${found} -eq 0 ]; then
+		echo "${sink##*: }"
+	fi
 	return ${found}
 }
 
@@ -43,7 +45,9 @@ function get_named_sink {
 		| grep "${search}")
 	local -r found=$?
 	sink=(${sink})
-	echo ${sink[1]}
+	if [ ${found} -eq 0 ]; then
+		echo ${sink[1]}
+	fi
 	return ${found}
 }
 
