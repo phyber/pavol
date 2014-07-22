@@ -63,6 +63,8 @@ function get_sink_command {
 	return 0
 }
 
+# Output the volume of the given sink.
+# Returns 0 on success.
 function get_volume {
 	local -r sink="$1"
 	# Process pactl output to work out volume.
