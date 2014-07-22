@@ -63,6 +63,37 @@ function get_sink_command {
 	return 0
 }
 
+function get_volume {
+	local -r sink="$1"
+	# Process pactl output to work out volume.
+	# On each line we have to check if we found the sink name we want, if
+	# we did we can start looking for the volume.
+	local sink_found
+	local volume
+	local vol_line
+	while read line; do
+		case "${line}" in
+			Name:*)
+				grep "${sink}" <<<"${line}" >/dev/null 2>&1
+				found=$?
+				;;
+			Volume:*)
+				if [ ! "${found}" -eq 0 ]; then
+					continue
+				fi
+				vol_line=(${line})
+				break
+				;;
+		esac
+	done < <(${pactl} list sinks)
+	if [ ${found} -eq 0 ]; then
+		# This is the volume of the left speaker, which should be good
+		# enough.
+		echo ${vol_line[4]}
+	fi
+	return ${found}
+}
+
 # Outputs the given line to stdout if PAVOL_DEBUG is set.
 # Returns 0.
 function pavol_debug {
