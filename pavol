@@ -138,8 +138,20 @@ function main {
 			;;
 	esac
 
-	# Toggling or setting volume? Volume is always the last arg.
-	local -r volume="${@: -1}"
+	# Toggle, set or status?
+	local cmd
+	local volume
+	local -r last_arg="${@: -1}"
+	case "${last_arg}" in
+		status)
+			get_volume "${sink}"
+			exit 0
+			;;
+		*)
+			volume="${last_arg}"
+			readonly volume
+			;;
+	esac
 
 	# Get sink command based on the "volume" being set.
 	local -r cmd=$(get_sink_command $volume)
