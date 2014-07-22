@@ -10,11 +10,11 @@ readonly pactl
 
 function usage {
 	local -r me=${0##*/}
-	echo "Usage: ${me} [SINKNAME] [-|+]VOLUME[%]|toggle"
+	echo "Usage: ${me} [SINKNAME] [-|+]VOLUME[%]|toggle|status"
 	echo "Example: ${me} -10%"
 	echo "         ${me} sink-name 50%"
 	echo "         ${me} toggle"
-	echo "         ${me} sink-name toggle"
+	echo "         ${me} sink-name status"
 	echo ""
 	echo "More information on the volume specification can be found in the"
 	echo "pactl(1) man page."
