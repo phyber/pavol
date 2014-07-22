@@ -9,7 +9,7 @@ fi
 readonly pactl
 
 function usage {
-	local me=${0##*/}
+	local -r me=${0##*/}
 	echo "Usage: ${me} [SINKNAME] [-|+]VOLUME[%]|toggle"
 	echo "Example: ${me} -10%"
 	echo "         ${me} sink-name 50%"
