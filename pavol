@@ -70,7 +70,7 @@ function get_volume {
 	# Process pactl output to work out volume.
 	# On each line we have to check if we found the sink name we want, if
 	# we did we can start looking for the volume.
-	local sink_found
+	local found
 	local volume
 	local vol_line
 	while read line; do
@@ -78,12 +78,14 @@ function get_volume {
 			Name:*)
 				grep "${sink}" <<<"${line}" >/dev/null 2>&1
 				found=$?
+				readonly found
 				;;
 			Volume:*)
 				if [ ! "${found}" -eq 0 ]; then
 					continue
 				fi
 				vol_line=(${line})
+				readonly vol_line
 				break
 				;;
 		esac
