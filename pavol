@@ -87,20 +87,24 @@ function get_volume {
 			Volume:*)
 				if [ "${found}" -eq 0 ]; then
 					local -r vol_line=(${line})
+					# Take the volume of the left speaker,
+					# hopefully this is good enough.
 					volume=${vol_line[4]}
-					break
 				fi
 				;;
 		esac
+		# If we found the device and the mute/volume status, we can
+		# break.
+		if [ "${found}" -eq 0 ] &&
+			[ ! -z "${muted}" ] &&
+			[ ! -z "${volume}" ]; then
+			break
+		fi
 	done < <(${pactl} list sinks)
 	if [ ${found} -eq 0 ]; then
 		if [ "${muted}" == "yes" ]; then
-			volume="♩${volume}"
-		else
-			volume="♫${volume}"
+			volume="M${volume}"
 		fi
-		# This is the volume of the left speaker, which should be good
-		# enough.
 		echo ${volume}
 	fi
 	return ${found}
