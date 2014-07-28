@@ -70,10 +70,9 @@ function get_volume {
 	# Process pactl output to work out volume.
 	# On each line we have to check if we found the sink name we want, if
 	# we did we can start looking for the volume.
-	# FIXME: Brittle, relies on output order of "pactl list sinks".
-	local found
-	local muted
-	local volume
+	local found=-1
+	local muted=""
+	local volume=""
 	while read line; do
 		case "${line}" in
 			Name:*)
